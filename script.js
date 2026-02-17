@@ -22,7 +22,7 @@ const displayTrendingProducts = (trendingP) => {
           <figure class="p-4 h-48 sm:h-56">
             <img 
               src="${tProduct.image}" 
-              alt="${tProduct.title}"
+              alt="product image"
               class="h-full w-full object-contain"
             />
           </figure>
@@ -45,10 +45,10 @@ const displayTrendingProducts = (trendingP) => {
                 </div>
               </div>
             </div>
-            <h2 class="card-title text-sm md:text-base line-clamp-2 min-h-[48px]">
+            <h2 class="card-title text-sm md:text-base line-clamp-2 min-h-[48px] truncate ">
               ${tProduct.title}
             </h2>
-            <p class="text-lg font-bold text-primary mt-2">
+            <p class="text-lg font-bold mt-2">
               $${tProduct.price}
             </p>
             <div class="card-actions mt-auto flex gap-3">  
@@ -70,6 +70,7 @@ const displayTrendingProducts = (trendingP) => {
 };
 loadTrending();
 
+// for Product page
 const loadAllProducts = () => {
   const url = "https://fakestoreapi.com/products";
   // console.log(url);
@@ -78,12 +79,16 @@ const loadAllProducts = () => {
     // .then((data) => console.log(data))
     .then((data) => displayAllProducts(data));
 };
-// for Product page
+const loadProductByCategory = (category) => {
+  const url = `https://fakestoreapi.com/products/category/${category}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayAllProducts(data));
+};
 const displayAllProducts = (allProduct) => {
   // console.log(allProduct);
   const productsContainer = document.getElementById("products-container");
   productsContainer.innerHTML = "";
-
   allProduct.forEach((allProducts) => {
     // console.log(allProducts);
     const card = document.createElement("div");
@@ -92,7 +97,7 @@ const displayAllProducts = (allProduct) => {
             <figure class="p-4 h-48 sm:h-56">
               <img 
                 src="${allProducts.image}" 
-                alt="${allProducts.title}"
+                alt="product image"
                 class="h-full w-full object-contain"
               />
             </figure>
@@ -115,10 +120,10 @@ const displayAllProducts = (allProduct) => {
                   </div>
                 </div>
               </div>
-              <h2 class="card-title text-sm md:text-base line-clamp-2 min-h-[48px]">
+              <h2 class="card-title text-sm md:text-base line-clamp-2 min-h-[48px] truncate">
                 ${allProducts.title}
               </h2>
-              <p class="text-lg font-bold text-primary mt-2">
+              <p class="text-lg font-bold mt-2">
                 $${allProducts.price}
               </p>
               <div class="card-actions mt-auto flex gap-3">  
@@ -134,8 +139,38 @@ const displayAllProducts = (allProduct) => {
             </div>
           </div>
     `;
-
     productsContainer.append(card);
   });
 };
+
+const loadCategory = () => {
+  const url = "https://fakestoreapi.com/products/categories";
+  // console.log(url);
+  fetch(url)
+    .then((res) => res.json())
+    // .then((data) => console.log(data));
+    .then((data) => displayCategories(data));
+};
+const displayCategories = (category) => {
+  // console.log(category);
+  const categoryContainer = document.getElementById("category-container");
+  categoryContainer.innerHTML = "";
+
+  const allBtnDiv = document.createElement("div");
+  allBtnDiv.innerHTML = `
+    <button onclick="loadAllProducts()" class="btn btn-outline btn-primary rounded-full">
+      All 
+    </button>
+  `;
+  categoryContainer.append(allBtnDiv);
+
+  for (let categories of category) {
+    const btnDiv = document.createElement("div");
+    btnDiv.innerHTML = `
+    <button onclick="loadProductByCategory('${categories}')" class="btn btn-outline btn-primary rounded-full">${categories}</button>
+    `;
+    categoryContainer.append(btnDiv);
+  }
+};
 loadAllProducts();
+loadCategory();
