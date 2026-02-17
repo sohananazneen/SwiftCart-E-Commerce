@@ -79,11 +79,23 @@ const loadAllProducts = () => {
     // .then((data) => console.log(data))
     .then((data) => displayAllProducts(data));
 };
+
+const removeActive = () => {
+  const categoryButtons = document.querySelectorAll(".category-btn");
+  // console.log(categoryButtons);
+  categoryButtons.forEach((btn) => btn.classList.remove("active"));
+};
 const loadProductByCategory = (category) => {
   const url = `https://fakestoreapi.com/products/category/${category}`;
   fetch(url)
     .then((res) => res.json())
-    .then((data) => displayAllProducts(data));
+    .then((data) => {
+      removeActive();
+      const clickBtn = document.getElementById(`category-btn-'${category}'`);
+      // console.log(clickBtn);
+      clickBtn.classList.add("active");
+      displayAllProducts(data);
+    });
 };
 const displayAllProducts = (allProduct) => {
   // console.log(allProduct);
@@ -167,7 +179,7 @@ const displayCategories = (category) => {
   for (let categories of category) {
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML = `
-    <button onclick="loadProductByCategory('${categories}')" class="btn btn-outline btn-primary rounded-full">${categories}</button>
+    <button id="category-btn-'${categories}'" onclick="loadProductByCategory('${categories}')" class="btn btn-outline btn-primary rounded-full category-btn">${categories}</button>
     `;
     categoryContainer.append(btnDiv);
   }
