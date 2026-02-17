@@ -64,7 +64,6 @@ const displayTrendingProducts = (trendingP) => {
           </div>
         </div>
     `;
-
     tpContainer.append(card);
   });
 };
@@ -96,6 +95,61 @@ const loadProductByCategory = (category) => {
       clickBtn.classList.add("active");
       displayAllProducts(data);
     });
+};
+const loadProductDetail = async (id) => {
+  const url = `https://fakestoreapi.com/products/${id}`;
+  // console.log(url);
+  const res = await fetch(url);
+  const pDetails = await res.json();
+  // console.log(pDetails);
+  displayProductDetails(pDetails);
+};
+const displayProductDetails = (productD) => {
+  console.log(productD);
+  const detailsBox = document.getElementById("details-container");
+  detailsBox.innerHTML = `   
+        <div class="card bg-base-100 shadow-md hover:shadow-xl transition duration-300 h-full flex flex-col">    
+          <figure class="p-4 h-48 sm:h-56">
+            <img 
+              src="${productD.image}" 
+              alt="product image"
+              class="h-full w-full object-contain"
+            />
+          </figure>
+          <div class="card-body flex flex-col flex-grow p-4">
+            
+            <h2 class="card-title text-sm md:text-base line-clamp-2 min-h-[48px]">
+              ${productD.title}
+            </h2>
+            <p>${productD.description}</p>            
+            <div class="flex justify-between items-center mb-2 text-sm">  
+            <p class="text-lg font-bold mt-2">
+              $${productD.price}
+            </p>           
+              <div class="flex items-center gap-1">
+              <div class="text-yellow-500">
+              <i class="fa-solid fa-star"></i>
+              </div>
+              <div>
+                <span>
+                ${productD.rating.rate}
+                </span>
+                <span>
+                  (${productD.rating.count})
+                </span>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions mt-auto flex gap-3"> 
+              <button class="btn btn-sm sm:btn-md btn-primary flex-1 w-full">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="ml-1">Add to Cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+    `;
+  document.getElementById("product_modal").showModal();
 };
 const displayAllProducts = (allProduct) => {
   // console.log(allProduct);
@@ -139,7 +193,7 @@ const displayAllProducts = (allProduct) => {
                 $${allProducts.price}
               </p>
               <div class="card-actions mt-auto flex gap-3">  
-                <button class="btn btn-sm sm:btn-md btn-outline flex-1 w-full">
+                <button onclick="loadProductDetail(${allProducts.id})" class="btn btn-sm sm:btn-md btn-outline flex-1 w-full">
                   <i class="fa-regular fa-eye"></i>
                   <span class="ml-1">Details</span>
                 </button>
