@@ -14,34 +14,63 @@ const displayTrendingProducts = (trendingP) => {
   const tpContainer = document.getElementById("trending-container");
   tpContainer.innerHTML = "";
 
-  trendingP.forEach((tProduct) => {
+  trendingP.slice(0, 3).forEach((tProduct) => {
     // console.log(tProduct);
     const card = document.createElement("div");
     card.innerHTML = `
    
-    <div class="card bg-base-100 shadow-sm ">
-  <figure class="p-4 h-48 sm:h-56">
-    <img class="h-full w-full object-contain"
-      src=${tProduct.image} />
-  </figure>
-  <div class="card-body">
-  <div class="flex">
-      <p class="badge badge-primary text-tiny">${tProduct.category}</p>
+  <div class="card bg-base-100 shadow-md hover:shadow-xl transition duration-300 h-full flex flex-col">
+    
+    <figure class="p-4 h-48 sm:h-56">
+      <img 
+        src="${tProduct.image}" 
+        alt="${tProduct.title}"
+        class="h-full w-full object-contain"
+      />
+    </figure>
 
-<p>${tProduct.rating.rate}</p>
-<p>${tProduct.rating.count}</p>
-</div>
-  </div>
-    <h2 class="card-title">
-      ${tProduct.title}
-    </h2>
-    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-    <div class="card-actions justify-end">
-      <div class="badge badge-outline">Details</div>
-      <div class="badge badge-outline">Add</div>
+    <div class="card-body flex flex-col flex-grow p-4">
+
+      <div class="flex justify-between items-center mb-2 text-sm">
+        <span class="badge badge-primary text-xs">
+          ${tProduct.category}
+        </span>
+
+        <div class="flex items-center gap-1">
+        <div class="text-yellow-500">
+        <i class="fa-solid fa-star"></i>
+        </div>
+        <div>
+          <span>
+          ${tProduct.rating.rate}
+          </span>
+          <span>
+            (${tProduct.rating.count})
+          </span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="card-title text-sm md:text-base line-clamp-2 min-h-[48px]">
+        ${tProduct.title}
+      </h2>
+
+      <p class="text-lg font-bold text-primary mt-2">
+        $${tProduct.price}
+      </p>
+
+      <div class="card-actions mt-auto flex gap-3">  
+        <button class="btn btn-sm sm:btn-md btn-outline flex-1 w-full">
+          <i class="fa-regular fa-eye"></i>
+          <span class="ml-1">Details</span>
+        </button>
+        <button class="btn btn-sm sm:btn-md btn-primary flex-1 w-full">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="ml-1">Add</span>
+        </button>
+      </div>
     </div>
   </div>
-</div>
     `;
 
     tpContainer.append(card);
