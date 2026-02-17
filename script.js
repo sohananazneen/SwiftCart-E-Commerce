@@ -105,7 +105,7 @@ const loadProductDetail = async (id) => {
   displayProductDetails(pDetails);
 };
 const displayProductDetails = (productD) => {
-  console.log(productD);
+  // console.log(productD);
   const detailsBox = document.getElementById("details-container");
   detailsBox.innerHTML = `   
         <div class="card bg-base-100 shadow-md hover:shadow-xl transition duration-300 h-full flex flex-col">    
